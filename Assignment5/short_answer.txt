@@ -1,0 +1,189 @@
+Christopher Patron
+CS106B, 11/07/2022
+
+Warmup
+-------
+Q1. How do the values of the member variables of `allBalls[0]` change from iteration to iteration? Specifically, what happens to the values of `_id`, `_x`, and `_y`?
+A1. In my case, allBalls[0] is initialized with _vx = 0 and _vy = -2. Therefore only the value of '_y' is changing as the ball is only moving in the -y and +y direction. The 
+variables _id and _x do not change in this instance.  
+
+Q2. How do the values of the member variables of the stuck ball change from iteration to iteration? Contrast this to your answer to the previous question.
+A2. In this instance, I am working with a ball stuck on the bottom edge of the window. What I notice with its variables is that only '_y' and '_vy' are the variables changing. 
+More specifically, the speed (_vy) is changing between -5 and 5 while the position (_y) is changing between 213 and 218. It is apparent that the bug has to do with how we handle 
+the edge cases of the window. 
+
+Q3. After forcing the stuck ball to position (0, 0), does the ball move normally from there or does it stay stuck?
+A3. The ball moves normally if we reset it to the (0, 0) postion. 
+
+Q4. On your system, what is the observed consequence of these memory errors:
+- access an index outside the allocated array bounds?
+- delete same memory twice?
+- access memory after it has been deleted?
+A4. 
+- I get a segmentation fault error where I'm told my program attempted to dereference a pointer to an invalid memory address (possibly out of bounds, deallocated, nullptr,...)
+- The program runs for a few seconds and then automatically crashes probably since some form of memory leak is occuring and the program terminates to prevent anything bad from happening.
+- I get an interesting result for this case. If I run the code in the debugger and step through it, I will eventually get the expected error of trying to access deleted memory. However, 
+if I try this with fully running the program, I get no error and the test case successfully accesses the deleted list. This is interesting to note as I proceed with the program. 
+
+PQArray
+-------
+Q5. There are extensive comments in both the interface (`pqarray.h`) and implementation (`pqarray.cpp`). Explain how and why the comments in the interface differ from those in the implementation. Consider both the content and audience for the documentation.
+A5. The reason we see a difference in the style of commenting between the files is due to the nature of their type. ".h" files serve the purpose of declaring whatever is needed for the 
+program to run. Therefore, we would expect more technical comments to be implemented in this file so that the developer or editor can fully understand what the purpose of each element is. 
+Moreover, we see in the ".cpp" file that the comments serve the purpose of explaing the method's funtionality and not necesarily it's run time or explicitly defining what its returning 
+or defining. 
+
+Q6. The class declares member variables `_numAllocated` and `_numFilled`. What is the difference between these two counts and why are both needed?
+A6. _numsAllocated defines the size of the array and _numsFilled defines the number of elements currently in the array. These are both needed so that we can keep track of how big the array is 
+and when it is necessary to increase its size so that we do not run into an issue of adding to an array that is at its capacity. 
+
+Q7. Although code within the body of a member function can directly access the object's member variables, the implementer may instead choose to call public member functions to get information about the object. For example, note how the operations `isEmpty()` and `peek()` intentionally call `size()` instead of using `_numFilled` or how `dequeue()` calls `peek()` to retrieve the frontmost element. Why might be this be considered a better design?
+A7. Using public methods to get information about the object could be considered a better design because it would allow for the foundational concepts of abstraction and encapsulation in OOP to shine. 
+It would be intuitive for the user to call a "get_'elem'" method rather having them try to figure out how the developer named their variables. 
+
+Q8. Give the results from your time trials and explain how they support your prediction for the Big-O runtimes of `enqueue` and `dequeue`.
+A8. 
+
+Correct (STUDENT_TEST, line 233) Testing Enqueue/Dequeue Time Operation
+    Line 238 TIME_OPERATION fillQueue(pq, sizes[i]) (size =      100) completed in    0.000 secs
+    Line 239 TIME_OPERATION emptyQueue(pq, sizes[i]) (size =      100) completed in    0.000 secs
+    Line 238 TIME_OPERATION fillQueue(pq, sizes[i]) (size =     1000) completed in    0.009 secs
+    Line 239 TIME_OPERATION emptyQueue(pq, sizes[i]) (size =     1000) completed in    0.000 secs
+    Line 238 TIME_OPERATION fillQueue(pq, sizes[i]) (size =    10000) completed in    0.807 secs
+    Line 239 TIME_OPERATION emptyQueue(pq, sizes[i]) (size =    10000) completed in    0.001 secs
+    Line 238 TIME_OPERATION fillQueue(pq, sizes[i]) (size =   100000) completed in   75.906 secs
+    Line 239 TIME_OPERATION emptyQueue(pq, sizes[i]) (size =   100000) completed in    0.001 secs
+
+As we can see from the results, the enqueue and dequeue methods are working with expected Big-O times of O(N) and O(1). Starting with dequeue, we see that there is little to no change
+in the time operation as the input size scales. With enqueue, we see a linear increase in the time between operations; from 1000 to 10000 we see a ratio of 0.807/0.009 = ~90 and from 
+10000 to 100000 we see a ratio of 75.906/0.807 = ~94 which is a clear indication that little variance between the ratios indicates a linear relationship.
+
+
+
+PQ Client
+---------
+Q9. Based on the Big O of `enqueue`/`dequeue`, what do you expect for the Big O of `pqSort` if using a `PQArray`? Run some timing trials to confirm your prediction, and include that data in your answer.
+A9. 
+
+    Line 79 TIME_OPERATION pqSort(vec) (size =    10000) completed in    0.714 secs
+    Line 79 TIME_OPERATION pqSort(vec) (size =    30000) completed in    7.558 secs
+    Line 79 TIME_OPERATION pqSort(vec) (size =    50000) completed in   18.466 secs
+    Line 79 TIME_OPERATION pqSort(vec) (size =    70000) completed in   36.023 secs
+    Line 79 TIME_OPERATION pqSort(vec) (size =    90000) completed in   57.517 secs
+
+As previously described, we know that the Big O for enqueue is O(N). Since we are looping over n elements in the vector and enqueueing them (with O(N) time), we see that the 
+big O for pqSort would be O(N^2). Visualizing the ouput for this data verifies this assumption.
+
+
+Q10. Based on the Big O of `enqueue`/`dequeue`, what do you expect for the Big O of `topK` in terms of `k` and `n` if using a `PQArray`? Run some timing trials to confirm your prediction, and include that data in your answer.
+A10. 
+
+
+Correct (STUDENT_TEST, line 130) topK: time trial with k fixed
+    Line 137 TIME_OPERATION topK(stream, k) (size =   200000) completed in    0.814 secs
+    Line 137 TIME_OPERATION topK(stream, k) (size =   400000) completed in    3.995 secs
+    Line 137 TIME_OPERATION topK(stream, k) (size =   800000) completed in    3.162 secs
+    Line 137 TIME_OPERATION topK(stream, k) (size =  1600000) completed in    6.588 secs
+    Line 137 TIME_OPERATION topK(stream, k) (size =  3200000) completed in   13.518 secs
+
+
+Correct (STUDENT_TEST, line 141) topK: time trial with n fixed
+    Line 148 TIME_OPERATION topK(stream, i) (size =       10) completed in    0.411 secs
+    Line 148 TIME_OPERATION topK(stream, i) (size =       20) completed in    0.000 secs
+    Line 148 TIME_OPERATION topK(stream, i) (size =       40) completed in    0.000 secs
+    Line 148 TIME_OPERATION topK(stream, i) (size =       80) completed in    0.000 secs
+    Line 148 TIME_OPERATION topK(stream, i) (size =      160) completed in    0.000 secs
+    Line 148 TIME_OPERATION topK(stream, i) (size =      320) completed in    0.000 secs
+    Line 148 TIME_OPERATION topK(stream, i) (size =      640) completed in    0.000 secs
+
+In looking at both the results for the time trials, we can see how topK scales differently depending on if n or k is fixed or not. More interestingly, we see that if we 
+keep n fixed and change k, we get much faster run times as compared to keeping k fixed and changing n. This is expected because the implementation of topK depends on the 
+efficieny of the PQArray class. Therefore, considering these results, I would say the big 0 for topK is O(NlogK).
+
+
+PQHeap
+------
+Q11. Start with an empty binary heap and enqueue the nine `DataPoint`s in the order shown below and show the result. You only need to show the final heap, not intermediate steps. Draw the heap as tree-like diagram with root element on top, its two children below, and so on. Yes, we know that we're asking you to draw pictures in a text file (we love the [AsciiFlow](http://asciiflow.com/) tool for "drawing" in text).
+A11. 
+                             1
+                          /     \
+                         3       2
+                        / \     / \ 
+                       6   5   9   4
+                      / \
+                     8   7
+
+Q12. Make two calls to `dequeue` on the above binary heap and draw the updated result.
+A12. 
+                             3
+                          /     \
+                         5       4
+                        / \     / \ 
+                       6   8   9   7
+
+Q13. Draw the array representation of the binary heap above. Label each element with its array index.
+A13. 
+	index:     0 | 1 | 2 | 3 | 4 | 5 | 6
+	          ----------------------------
+	element:   3 | 5 | 4 | 6 | 8 | 9 | 7
+
+Q14. Re-run the timing trials on `pqclient.cpp` and provide your results that confirm that `pqSort` runs in time O(NlogN) and `topK` in O(NlogK).
+A14. 
+
+
+Correct (STUDENT_TEST, line 154) Verifying pqSort w/ PQHeap Time Operation
+    Line 159 TIME_OPERATION pqSort(vec) (size =   200000) completed in    0.270 secs
+    Line 159 TIME_OPERATION pqSort(vec) (size =   400000) completed in    0.542 secs
+    Line 159 TIME_OPERATION pqSort(vec) (size =   600000) completed in    0.836 secs
+    Line 159 TIME_OPERATION pqSort(vec) (size =   800000) completed in    1.157 secs
+    Line 159 TIME_OPERATION pqSort(vec) (size =  1000000) completed in    1.481 secs
+
+Correct (STUDENT_TEST, line 165) topK w/ PQHeap: time trial with k fixed
+    Line 172 TIME_OPERATION topK(stream, k) (size =   200000) completed in    0.858 secs
+    Line 172 TIME_OPERATION topK(stream, k) (size =   400000) completed in    1.717 secs
+    Line 172 TIME_OPERATION topK(stream, k) (size =   800000) completed in    3.424 secs
+    Line 172 TIME_OPERATION topK(stream, k) (size =  1600000) completed in   10.498 secs
+    Line 172 TIME_OPERATION topK(stream, k) (size =  3200000) completed in   28.636 secs
+
+Correct (STUDENT_TEST, line 176) topK w/ PQHeap: time trial with n fixed
+    Line 183 TIME_OPERATION topK(stream, i) (size =       10) completed in    0.901 secs
+    Line 183 TIME_OPERATION topK(stream, i) (size =       20) completed in    0.000 secs
+    Line 183 TIME_OPERATION topK(stream, i) (size =       40) completed in    0.000 secs
+    Line 183 TIME_OPERATION topK(stream, i) (size =       80) completed in    0.000 secs
+    Line 183 TIME_OPERATION topK(stream, i) (size =      160) completed in    0.000 secs
+    Line 183 TIME_OPERATION topK(stream, i) (size =      320) completed in    0.000 secs
+    Line 183 TIME_OPERATION topK(stream, i) (size =      640) completed in    0.000 secs
+
+Looking at our results, we can see the logarithmic nature of the time complexity of the implementations of pqSort and topK. Comparing the pqSort results to those in Q9, 
+we see a drastic decrease in the time completion with the implementation of even more elements than the original test. We see the same with the topK results and can 
+really see the logarithmic nauture when we fix or don't fix K. 
+
+
+Embedded Ethics
+---------------
+Q15. Consider the differences between this three-bin priority queue and the priority queue you implemented on your assignment. Which would be more efficient to insert elements into and why? More generally, what are the benefits and disadvantages of using the three-bin priority queue vs. a regular priority queue?
+A15. With this implementation, I believe that having a 3 bin priority queue is possible but it may be more tedious as you'd have to be cross 
+checking across three different objects when trying to evaluate conditions. In using a single priority queue, you would be able to efficiently 
+access elements faster as compared to having look into three different queues. Since enqueueing and dequeueing run in O(1) time, there may not be 
+a drastic different in the time complexity between a single and triple queue implementation.
+
+Q16. Describe a real-world system where a three-bin priority queue could be used. What factors would you use to distinguish between a low vs. medium vs. high priority element? What limitations might you need to consider when using a three-bin priority queue to represent this system?
+A16. A three bin priority bin could be implemented in the development of a project management system where depending on the scope of the project,
+you have to define those three thresholds. For this example, to condsider the priority, we shoule be considering urgency, timing, value, cost, etc. 
+In terms of limitations, the concept of having three bins is a bad idea. This is because if something is "highest priority," by definition everything 
+else is subordiante to that objective.
+
+Q17. Different institutions consider different factors in admissions and convert criteria to numbers different ways.  Regardless of which specific factors are considered, should an admissions department use a purely numerical rankings based system? Why or why not?
+
+If yes, discuss what factors you think would be best to include when calculating numerical rankings and why those factors are well-represented as numbers. If not, discuss what factors you think should be considered in college admissions that would be difficult to represent as a numerical score. There are no right or wrong answers here - we're genuinely interested in your thoughts!
+A17. I don't think so. I think the combination of a numerical system and a holistic review of the application of an admissions officer can be a good combination. 
+I think of this in the case of those "threshold" situations. For example, looking at person 500 and person 501, there can be a major difference between the, beyond 
+the numeric scale that an algorithm would not be able to catch whereas an admissions officer would.
+
+Q18. Describe a real-world system that requires ranking but in which classification with a single number misses important context (i.e. a priority queue might not be the best way to store the objects being ranked). Make sure to use an example that hasn't already been discussed in lecture or in this assignment.
+A18. I would say something along the lines of apple maps or google maps. What I mean is that when you search for a restaurant or a store, it will return the 
+closest ones to you (i.e highest priority) but it may not be the one that you want/are looking for.
+
+Q19. How would you design an implementation for the hospital's priority queue that dynamically determines which patient is the best match whenever a new organ becomes available? __Note:__ Your design does not have to be the fastest or most efficient.
+A19. I believe that the implementation of pointers with the dynamic array would help make the system more efficient as you would just have to update the pointer 
+and not re-size the array everytime you need to update it.
