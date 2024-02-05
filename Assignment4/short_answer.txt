@@ -1,0 +1,54 @@
+Christopher Patron
+CS106B, 10/24/2022
+
+Warmup
+------
+Q1. What is the value of `totalMoves` after stepping over the call to `moveTower` in `hanoiAnimation`?
+A1. 15 moves
+
+Q2. What is the value of the `totalMoves` variable after stepping over the first recursive sub-call?
+(In other words, within `moveTower` and just after stepping over the first recursive sub-call
+to `moveTower` inside the `else` statement.)
+A2. 7 moves
+
+Q3. After breaking at the base case of `moveTower` and then choosing Step Out, where do you end up?
+(What function are you in, and at what line number?)
+What is the value of the `totalMoves` variable at this point?
+A3. We are in the recursive case of moveTower on line 77. The totalMoves value is 1
+
+Q4. What is the smallest possible input that you used to trigger the bug in the program?
+A4. The smallest possible input I provided was {-1, 1}
+
+Q5. Identify the one-character error in the code and explain why that bug causes the function
+to return the output you see when running on the minimal input you listed above.
+You should be able to specifically account for how the error causes the result to
+change from “completely correct” to “terribly wrong.”
+A5. The one character error is when recursively calling the function. It should not be 
+sumSoFar += v[index] because you are then overriding the sum value each time instead
+of continuously updating it.
+
+Predict
+-------
+Q6. In your own words, describe some of the specific drawbacks to using global variables
+and explain why a program-wide constant like keypad does not suffer from the same 
+drawbacks.
+A6. In general global variables are not recommended because depending on its type, it could be mutable.
+Therefore changing the variable at a global scale could seriosuly affect the way in the program you are 
+designing runs. A program wide constant can be acceptable because it is a fixed value that you as the 
+programmer know will never change. 
+
+Redistrict
+----------
+Q7. A leader of a political party in your hometown learns you just took CS106B.
+They offer you a job working on cutting-edge software that applies algorithms to optimize
+gerrymandering during the process of redistricting.
+
+What questions might you ask about this job before making a decision? What might be the drawbacks?
+Which communities would be affected by the work you're doing?
+
+Please write your list of 3-5 questions and be sure to include ethical considerations.
+A7. 
+"Is the current data we have the most up to date?"
+"Will we be given enough time to thoroughly test the software to ensure it is working both efficiently and ethically?"
+"How are you determing the parameters that this software will take in (like the desired number of districts and the population grid)?"
+"Will we be able to effectively communicate within the team to ensure that this software is working as intended?"
