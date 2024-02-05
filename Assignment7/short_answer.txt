@@ -1,0 +1,76 @@
+Christopher Patron
+CS106B, 11/29/2022
+
+
+Q1. Use the above encoding tree to decode the bit sequence `0101100011`.
+A1. MOONS
+
+Q2. Prepare a table for the above encoding tree that lists each character with its assigned bit sequence.
+Use your table to encode the string `"SONS"`.
+A2. 
+       Letter | Sequence
+       ------------------
+          O   |  1
+          N   |  00
+          M   |  010
+          S   |  011
+
+  SONS = 011100011
+
+Q3. Huffman codes obey the _prefix_ property: no character's encoded bit sequence is a prefix of any other.
+What feature of an encoding tree demonstrates that it obeys the prefix property?
+A3. The feature of the encoding tree that obeys this property is that all leaf node will have no children.
+
+Q4. Flatten the encoding tree above on the right into its sequence of bits (tree shape) and sequence of characters (tree leaves).
+A4. 
+   Shape: 1101000
+   Leaves: NMSO
+
+Q5. Unflatten the sequences `110100100` (tree shape) and `FLERA` (tree leaves) to reconstruct the original encoding tree.
+A5. 
+                 *
+             /       \
+            *         *
+          /   \     /   \
+         F     *   R     A
+              / \
+             L   E
+Q6. Construct a Huffman coding tree for the input `"BOOKKEEPER"`.
+A6.  
+                 *
+             /       \
+            *         *
+          /   \     /   \
+         O     K   E     *
+                       /   \               
+                      R     *
+                          /   \ 
+                         B     P
+
+Q7. Calculate the entropy of your Huffman tree for `"BOOKKEEPER"`.
+Confirm that if you had chosen to break ties in a different manner when constructing the tree,
+this alternate tree has the same entropy as the optimal result.
+A7. 
+				10
+			/                \
+                       6                  4
+                  /        \          /       \ 
+                 3          E        K         2
+              /     \       3        2       /   \
+              B      O                       P    R
+              1      2                       1    1
+ 
+
+    Entropy = (1*3 + 2*3 + 3*2 + 2*2 + 1*3 + 1*3)/(10) = 2.5
+
+Q8. Consider the space of inputs of length 1000 that consists of varied occurrences of 100 distinct characters.
+Of those various inputs, contrast which inputs result in a balanced Huffman tree versus those that produce a
+very lopsided Huffman tree. As an example, what if each of the 100 characters were represented 10 times
+(for a total of 1000 characters)? What would the Huffman tree look like?
+What if, instead, 99 of the characters was represented only once, but the remaining character was represented 901 times (again, for a total of 1000 characters)? What would the Huffman tree look like?
+Which of the two Huffman trees achieves more significant compression?
+What does this tell you about what makes for a "good" versus "bad" Huffman tree?
+A8. After taking this example into consideration, we can see that a good Huffman tree is one that is lopsided. 
+The lopsidededness is a good thing for a Huffman tree because the shorter paths represent the more frequently used 
+elemnents and those will have smaller bits. Therefore, we are able to achieve more compression in this scenario as compared
+to one where we have a balanced tree and really can't leverage that efficiency.
