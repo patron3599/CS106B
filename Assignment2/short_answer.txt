@@ -1,0 +1,82 @@
+Christopher Patron
+CS106B, 10/10/2022
+
+Warmup
+------
+
+Q1. The display of the Stack in the debugger uses the labels `top` and `bottom` to mark the two ends of the stack. How are the contents labeled when the Stack contains only one element?
+A1. The contents are labeled as "bottom/top" when there is only one element in the Stack.
+
+Q2. For which type of inputs does the function go into an infinite loop?
+A2. I found that if all elements in the queue are negative, then it will be an infinite loop. This is because the index, i, is not growing at the same size as q if a negative value is doubled. 
+Therefore, to prevent an infinite loop, you must also increase the index when you encounter a negative. 
+
+Q3. Show your edited code for `duplicateNegatives` that fixes the problem with the infinite loop.
+A3. void duplicateNegatives(Queue<int>& q) {
+    for (int i = 0; i < q.size(); i++) {
+        int val = q.dequeue();
+        q.enqueue(val);
+        if (val < 0) {
+            q.enqueue(val); // double up on negative numbers
+            i++;
+        }
+    }
+}
+
+Q4. What is the better fix to `sumStack` that corrects the bug?
+A4. I think the better fix would be to initialize the total to zero. That way when the program gets to the while-loop, if the stack is empty, it'll automatically return the total 
+which will be 0. Since we are initializing to zero, we are also not messing with the arithmetic of the function in creating this change.
+
+
+Maze
+----
+Q5. After you have written your test cases, describe your testing strategy to confirm that your `validatePath` operates as intended. How confident are you that it works correctly in all cases?
+A5. To ensure that validatePath was working as I intended, I employed 3 test cases that I believe capture all the possible errors it could 
+encounter. The first test was to verify that the path started at the beginning. The next one was to give it two different valid paths on the same 
+grid and recognize that both are indeed valid. Lastly, I tested to see if it could recognized that it was cornered and had nowhere to go. Moreover,
+in running these tests, it further solidified my confidence in my logic for the generateValidMoves function as well. 
+
+Q6. While BFS and DFS are equivalently capable in terms of finding a solution, the two can differ in which solution is found (when there are multiple) and how quickly a solution is discovered. An advantage of BFS is that it always finds the shortest possible solution, explain why this is guaranteed for BFS and not for DFS. An advantage of DFS is that for some mazes it will find a solution more quickly than BFS, explain how this could be so.
+A6. The reason BFS has the advantage of finding the shortest possible is due to the natures of queues; Since they operate in a first-in first-out
+fashion, this gurantees that the shorter paths will always be processed first before the longers since those will reside at the back of the queue.
+The reason DFS can find a solution quicker in some mazes is because of its last-in first-out nature. It is essentially checking one path until it
+reaches either an invalid path or a solution and it could get lucky that one of the first paths it picks happens to be the solution. 
+
+Q7. Most students are sold on the benefit of the fancy features provided by `Vector`, `Grid`, and `Set` but the ADT skeptics may question the value of `Stack` and `Queue` ADTs, seeing them as nothing more than a restricted `Vector`. Make your best argument to convince them of the benefits these ADTS have over `Vector`.
+A7. My best and biggest argument would be efficieny and runtime. Most of the operations for queues and stacks run in constant time and therefore 
+will run much quicker as compared to a vector, grid, or set when we start to deal with much larger datasets.
+
+Search Engine
+-------------
+Q8. Sketch the contents of the inverted index built from the `res/tiny.txt` database file.
+A8.  { "milk" : <"www.shoppinglist.com">,
+       "fish" : <"www.shoppinglist.com", "www.dr.seuss.net", "www.bigbadwolf.com">,
+       "bread" : <"www.shoppinglist.com">,   
+       "5lbmms" : <"www.shoppinglist.com">, 
+       "red" : <"www.rainbow.org", "www.dr.seuss.net">, 
+       "green" : <"www.rainbow.org">, 
+       "blue" : <"www.rainbow.org", "www.dr.seuss.net">, 
+       "one" : <"www.dr.seuss.net">, 
+       "two" : <"www.dr.seuss.net">, 
+       "10" : <"www.dr.seuss.net">, 
+       "i" : <"www.bigbaswolf.com">, 
+       "eat" : <"www.bigbaswolf.com"> }
+
+Beyond Algorithmic Analysis
+---------------------------
+Q9. In a short paragraph, describe a real or plausible scenario not previously presented in lecture in which using techniques like benchmarking or counting "write" steps to improve the performance of an algorithm might benefit Earth's environment. Include your thoughts on how a software engineer working on this piece of code might identify such potential benefits and take them into consideration when designing the code.
+A9. I think one plausible scenario would be a software engineer working with a huge data set such as carbon emissions. Since there is so much to process in a data set 
+of that size, I believe that they would definitely have to consider the algorithims and the data structures that they use. As we've seen in class, the run time can 
+increase exponentially if one does not select the optimal algorithm or containers. Global warming is a very pressing issue in our zeitgeist and finding a solution to it 
+greatly depeneds on being able to find answer expediently, which can be done through efficient algorithms and use of data structures. 
+
+Q10. According to the contract that IBM struck with the state of Indiana, the criteria for optimization were improving efficiency of the overall welfare system and reducing fraud. Criteria for reducing wait times and wrongful denials were not included.  However, wrongfully denying benefits has a huge negative  impact on the citizens who rely on the system.  If criteria like minimizing wrongful denials were not included in the contract, should engineers have included them in their optimization algorithm?  Why or why not?
+A10. It's obvious that the engineers should have included those set of parameters when considering the algorithm. However, I dont't think that they are to blame. The reason
+I think this is because these engineers might not be able to see the big picture of the project. What I mean by that is that they may be tasked to only do a certain portion 
+of the project and not the entire thing. Therefore, may never realize the impacts that they are making. I believe that the management team of the project is to blame in 
+failing to coordinate and communicate within the company to deliver a useful product. 
+
+Q11. Imagine that after completing CS106B you are hired at IBM as an engineer working on this system. How might you have approached designing and setting the goals of this system?  How might you apply algorithmic analysis tools to build a system that achieved  the desired goals? Could you do so in a way that avoids the severe negative impacts on users of the system that are outlined in the case study?
+A11. I personally would have tried to understand the "bigger picture of the project." In my professional experience, I feel that I have been placed in a similar situation where I 
+don't know all the logistics of the project and I am tasked with a certain part of it. After I graduate, I'm going to work towards being involved in understanding the full scope 
+to prevent issues similar to IBM's which really could have been solved with effective communicaiton.  
