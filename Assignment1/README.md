@@ -1,0 +1,1 @@
+Assignment 1 - Learning C++ | Perfect: a warmup exercise involving number theory, algorithms, and optimization. | Soundex: A complete program that demonstrates a nifty algorithm for matching and grouping names based on their pronunciation. 
