@@ -1,0 +1,74 @@
+Christopher Patron
+CS106B, 10/01/2022
+
+Perfect Numbers
+---------------
+
+Q1. Roughly how long did it take your computer to do the search? How many perfect numbers were found and what were they?
+A1. It took my computer about 3 seconds. 4 perfect numbers were found and they are 6, 28, 496, and 8128.
+
+Q2. Make a table of the timing results for `findPerfects` that you observed. (old-school table of text rows and columns is just fine)
+A2.         Size  | Time(sec.)
+          ---------------------
+           32,000 |  1.494
+           64,000 |  4.982
+          128,000 |  19.575
+          256,000 |  76.481
+
+Q3. Does it take the same amount of work to compute `isPerfect` on the number 10 as it does on the number 1000? Why or why not? Does it take the same amount of work for `findPerfects` to search the range of numbers from 1-1000 as it does to search the numbers from 1000-2000? Why or why not?
+A3. No it does not. This is because isPerfect calls the divisorSum function which is the main workhorse of this program. In this fucntion, we see that it is going number by number 
+up until "n" and verifying wether it contributes to the perfect number.  I also proved this by creating a new student test and to also practice my cpp skills; For n=10, t=0.093s and 
+for n=1000, t=0.156s. Next, for the amount of work for isPerfect to do between 1-1000 and 1000-2000, it is evident that more work will be required for the latter. This is because in the 
+divisorSum function, the loop will always begin from one and go until "n", therefore the 1000-2000 range will produce more loops as compared to the 1-1000 range.
+
+Q4. Extrapolate from the data you gathered and make a prediction: how long will it take `findPerfects` to reach the fifth perfect number?
+A4. To get my answer, I noted that the ratio of times was converging towards 4 seconds from a quick spreadsheet created in excel. From 6 to 28 it was 3.33s, 28 to 496 was 3.9, and so on. 
+Therefore, I multiplied all the subsequent time values by 4 until I reached a value for 32768000; The respective time value is roughly 1253064.704 seconds or 348 hours.
+
+Q5. Do any of the tests still pass even with this broken function? Why or why not?
+A5. No, some of the test now fail. This is because the induced bug no longer allows for the accuracte calculation of a perfect number, so we should expect to see errors in the tests
+
+Q6. Explain your testing strategy for `smarterSum` and how you chose your specific test cases that lead you to be confident the function is working correctly.
+A6. My strategy was to first find out if "n" is a perfect square or not. After this, if it did have a perfect square, I could continue to use the script from divisorSum. If it wasn't, I 
+then would apply the strategy provided in the instructions which was to loop until the sqaure root of "n" and then add on "n"/divisor for each occasion where we encountered a divisor. 
+I then added some conditional statements to protect against any outlier cases. The cases that give me confidence that are selecting ones such as having "n" be 1 or 0 and that's because
+simple cases like that usually are never thought of. Moreover, I added values that I know would produce an exact perfect number or a negative value.
+
+Q7. Record your timing results for `findPerfectsSmarter` into a table.
+A7.         Size     |  Time(sec.)
+          ---------------------
+           512,000   |  4.196
+           1,024,000 |  10.449
+           2,048,000 |  26.419
+           4,096,000 |  68.492
+
+Q8. Make a prediction: how long will `findPerfectsSmarter` take to reach the fifth perfect number?
+A8. Using the same excat procedure as described in Q4, I was able to determine that the time required to find the fifth perfect number would be about 1.4 hours.
+
+Q9. Explain how you chose your specific test cases and why they lead you to be confident `findNthPerfectEuclid` is working correctly.
+A9. My thought process in determining which test cases to use was to mainly ensure that I was correctlly calculating the correct perfect number at the desired 'nth' position because I know 
+that sometimes the classic "fencepost" problem arises where you may need to intialize a value differently or loop in a differenent way to ensure that you don't run into this problem. After 
+this, I added in the rest of my tests and was happy to see they yielded no errors.
+
+Soundex
+-------
+
+Q10. What is the Soundex code for "Angelou"? What is the code for your own surname?
+A10. The Soundex code for "Angelou" is A524. My surname is "Patron" therefore the code would be P365.
+
+Q11. Before writing any code, brainstorm your plan of attack and sketch how you might decompose the work into smaller tasks. Briefly describe your decomposition strategy.
+A11. My plan of attack will be to first take in the string, make it lowercase and then loop through it to remove any non-alphabetic characters. The next task will be to encode the chars from the string. After this, I will loop 
+through the string again to remove any duplicates. Then, loop through the string to remove zeros. And finally ensure that the length is exacty 4. I think a for-each loop can be beneficial for these functions and will attempt to 
+implement it.
+
+Q12. Think about one or more examples of a class of names that the Soundex system might not work well for. Explain what this class of names is and why the system might incorrectly group them or mis-categorize one of the names.
+A12. I believe that an example of surnames that may not work well is one for those that are short. This is because by rule, soundex will end up having to buffer the code with zeros. I played around with this idea and found that 
+this was prominent in Chinese surnames such as: Li, Gao, Lin, He, and others. Esentially, the soundex code for all these was the first letter and then zeros. This leads to an incorrect grouping and misrepresentation for these 
+surnames. 
+
+Q13. Suppose you are a software engineer working for the U.S. government. You have been tasked with implementing a system that collects names as part of the Census survey and analyzes these names using a phonetic algorithm. Your boss suggests using Soundex and notes that the algorithm is only expected to work for ASCII-encoded strings, since supporting Unicode would require extra work and time. What would your response be and why? What representational harms might result from building a system that exclusively uses Soundex and/or ASCII?
+A13. Being able to correctly represent and visualize data is very important. Therefore, I would strongly suggest to my boss to implement the use of Unicode over that of ASCII. This is because the US is so diverse that at this point 
+it should have been assumed to use Unicode from the start. As mentioned in the previous answer, some consequences could be that short surnames could be mis-categorized or those that are more foreign as well could be misrepresented and 
+subsequently be mis-categorized.
+
+
