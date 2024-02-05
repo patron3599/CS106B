@@ -1,0 +1,91 @@
+Christopher Patron
+CS106B, 11/14/2022
+
+Memory Debugging Warmup
+-----------------------
+Q1. What does the yellow background for a test case indicate in the SimpleTest result window?
+A1. The yellow window indicates that there has been a memory leak 
+
+Q2. What is the observed consequence of a test that uses `delete` on a memory address that has already been deallocated?
+A2. The program crashes.
+
+Q3. On your system, what is the observed consequence of `badDeallocate`? Under what circumstances (if any) did the buggy code trigger an error or crash?
+A3. On my system, 'badDeallocate' operates fine and pass the tests. I tried to substantially increase the size of both tests and they still passed.
+What was interesting to note is that on a size of 3 for the first test, it ran just fine. However, when I stepped through it in the debugger, I then 
+got an error from qt saying that a segmentation fault had occured and my OS had to step in and then the test crashed. This just shows how cautious I must 
+be as I head into this assignment. 
+
+Q4. How is a segmentation fault presented on your system?
+A4. On my system, it seems that a segmentation fault presents itself in different ways. This last test ran succesfully every single time I ran it normally.
+However, either stepping through the test or running it completely in the debugger would raise the segmentation fault error. This just shows how cautious I must 
+be as I head into this assignment. 
+
+Labyrinth
+---------
+Q5. Give a different valid path through the example labyrinth that collects all three magical items.
+A5. SEWWWNSEENWNNE
+
+Sorting Linked Lists
+---------------------
+Q6. If the `deallocateList` utility function were implemented recursively, give a rough estimate of the maximum length list it could successfully handle. What would be the observed result from attempting to deallocate a list longer than this maximum?
+A6. With a recursion implementation, I believe that the maximum length of the list would be around 43272 elements. If we try to deallocate a list longer than the aforementioned 
+value, I would expect a segmentation error to occur. 
+
+Q7. The sort prototype takes a `ListNode*` by reference. Explain why the pointer itself needs to be passed by reference and what the consequence would be if it were not.
+A7. The pointer itself needs to be passed by reference because if not we would be creating a copy of the pointer in our function and would eventually "lose it" 
+as we are splitting the list up which would lead to memory leak issues. 
+
+Q8. Run time trials and provide your results that confirm that RunSort is O(N^2) . Verify you can achieve O(N) results on inputs constructed to play to its strengths.
+A8. 
+
+Leak (STUDENT_TEST, line 879) Timing runSort
+    Line 894 TIME_OPERATION runSort(list) (size =    10000) completed in    0.148 secs
+    Line 894 TIME_OPERATION runSort(list) (size =    20000) completed in    0.897 secs
+    Line 894 TIME_OPERATION runSort(list) (size =    40000) completed in    4.358 secs
+    Line 894 TIME_OPERATION runSort(list) (size =    80000) completed in   18.492 secs
+    Test had allocation count mismatch with these types:
+        ListNode: Leaked 8,089 objects.
+
+
+Correct (STUDENT_TEST, line 902) Timing runSort on sorted lists: Best case
+    Line 916 TIME_OPERATION runSort(list) (size = 10000000) completed in    0.106 secs
+    Line 916 TIME_OPERATION runSort(list) (size = 20000000) completed in    0.221 secs
+    Line 916 TIME_OPERATION runSort(list) (size = 40000000) completed in    0.443 secs
+    Line 916 TIME_OPERATION runSort(list) (size = 80000000) completed in    0.873 secs
+
+Disregarding the memory leak issues for the first test, we see O(N^2) behavior as the size of the number of elements scales. As postulated, we would expect 
+a sorted list to run much faster since the algorithm depends on contiguous sorted sub lists. This was confirmed with the second set of results. 
+
+Q9. Run time trials and provide your results that confirm that QuickSort is O(NlogN) . Verify the runtime degrades to O(N^2) on inputs constructed to trigger the worst case behavior.
+A9. 
+
+Correct (STUDENT_TEST, line 924) Timing quickSort
+    Line 939 TIME_OPERATION quickSort(list) (size =   500000) completed in    0.152 secs
+    Line 939 TIME_OPERATION quickSort(list) (size =  1000000) completed in    0.319 secs
+    Line 939 TIME_OPERATION quickSort(list) (size =  2000000) completed in    0.677 secs
+    Line 939 TIME_OPERATION quickSort(list) (size =  4000000) completed in    1.308 secs
+
+
+Correct (STUDENT_TEST, line 946) Timing quickSort: Worst case
+    Line 960 TIME_OPERATION quickSort(list) (size = 10000000) completed in    0.290 secs
+    Line 960 TIME_OPERATION quickSort(list) (size = 20000000) completed in    0.546 secs
+    Line 960 TIME_OPERATION quickSort(list) (size = 40000000) completed in    1.088 secs
+    Line 960 TIME_OPERATION quickSort(list) (size = 80000000) completed in    2.188 secs
+
+
+Q10. Run the provided timing trials that compare your linked list QuickSort to a Vector sort on the same sequence and report the results. Who wins and why?
+A10. 
+
+Correct (PROVIDED_TEST, line 526) Time linked list quicksort vs vector quicksort
+    Line 541 TIME_OPERATION quickSort(list) (size =    50000) completed in    0.020 secs
+    Line 542 TIME_OPERATION v.sort() (size =    50000) completed in    0.280 secs
+    Line 541 TIME_OPERATION quickSort(list) (size =   100000) completed in    0.038 secs
+    Line 542 TIME_OPERATION v.sort() (size =   100000) completed in    0.405 secs
+    Line 541 TIME_OPERATION quickSort(list) (size =   200000) completed in    0.125 secs
+    Line 542 TIME_OPERATION v.sort() (size =   200000) completed in    0.767 secs
+    Line 541 TIME_OPERATION quickSort(list) (size =   400000) completed in    0.262 secs
+    Line 542 TIME_OPERATION v.sort() (size =   400000) completed in    1.644 secs
+
+As expected, quickSort has a much faster runtime when comparing it to vector sort. I think quickSort performs much faster than sort because we are 
+solely working with pointers in this algorithm. With vector sorting, we are also working with pointers but also the vector data strucutre as well 
+which I believe is one of the main culprits in why it is takinf slightly longer to sort. 
